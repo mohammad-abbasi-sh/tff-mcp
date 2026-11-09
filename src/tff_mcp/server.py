@@ -30,7 +30,7 @@ referee columns until appointments are announced close to match
 day, so referee data here comes from the match-detail page. The
 site is legacy ASP.NET served as windows-1254. Read-only; transport
 uses Chrome TLS impersonation; requests are spaced ~0.8s apart.
-Built by Mohammad Abbasi (mohammad-abbasi-sh) — Turkey MCP
+Built by Mohammad Abbasi (mohammad-abbasi-sh) — https://almanibama.ir · https://mabbasi.ir — Turkey MCP
 factory.\
 """
 
