@@ -15,7 +15,7 @@ Add to your MCP client config (stdio):
   "mcpServers": {
     "tff": {
       "command": "uvx",
-      "args": ["tff-mcp"]
+      "args": ["tff-mcp==0.1.0"]
     }
   }
 }
@@ -54,9 +54,9 @@ tff.org serves its league pages fully server-rendered — no login, no API key, 
 ## Install
 
 ```bash
-uvx tff-mcp        # run directly (needs uv)
+uvx tff-mcp==0.1.0        # run directly (needs uv)
 # or
-pip install tff-mcp
+pip install tff-mcp==0.1.0
 tff-mcp    # starts the MCP server on stdio
 ```
 
