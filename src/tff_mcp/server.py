@@ -3,6 +3,7 @@ Football Federation)."""
 from __future__ import annotations
 
 import json
+from datetime import datetime, timezone
 
 from mcp.server.fastmcp import FastMCP
 
@@ -35,8 +36,24 @@ factory.\
 """
 
 
+_SOURCE = "tff.org"
+_DISCLAIMER = "Unofficial read-only data from tff.org; verify on the site before acting on it."
+
+
+def _envelope() -> dict:
+    return {
+        "fetched_at": datetime.now(timezone.utc).isoformat(),
+        "source": _SOURCE,
+        "disclaimer": _DISCLAIMER,
+    }
+
+
+def _ok(payload: dict) -> str:
+    return json.dumps({**_envelope(), **payload}, ensure_ascii=False)
+
+
 def _err(e: Exception) -> str:
-    return json.dumps({"error": str(e)}, ensure_ascii=False)
+    return _ok({"error": str(e)})
 
 
 def _validate_limit(limit: int, lo: int = 1, hi: int = 50) -> int:
@@ -84,8 +101,7 @@ def tff_list_leagues() -> str:
     id, whether it has groups, whether a top-scorers page exists).
     No arguments. Use a slug with tff_standings, tff_fixtures and
     tff_top_scorers."""
-    return json.dumps(
-        {
+    return _ok({
             "leagues": [
                 {
                     "slug": slug,
@@ -96,9 +112,7 @@ def tff_list_leagues() -> str:
                 }
                 for slug, info in _F.LEAGUES.items()
             ]
-        },
-        ensure_ascii=False,
-    )
+        })
 
 
 @mcp.tool()
@@ -124,7 +138,7 @@ def tff_standings(league: str = "trendyol-super-lig", group: str | None = None) 
         out["group"] = (
             _F.resolve_group(groups, group) or groups[0]
         )["name"]
-    return json.dumps(out, ensure_ascii=False)
+    return _ok(out)
 
 
 @mcp.tool()
@@ -161,7 +175,7 @@ def tff_fixtures(
         out["group"] = (
             _F.resolve_group(groups, group) or groups[0]
         )["name"]
-    return json.dumps(out, ensure_ascii=False)
+    return _ok(out)
 
 
 @mcp.tool()
@@ -179,7 +193,7 @@ def tff_match_detail(mac_id: str) -> str:
     except (ValueError, _http.TffError) as e:
         return _err(e)
     data["mac_id"] = str(mac_id).strip()
-    return json.dumps(data, ensure_ascii=False)
+    return _ok(data)
 
 
 @mcp.tool()
@@ -202,14 +216,21 @@ def tff_top_scorers(league: str = "trendyol-super-lig", limit: int = 10) -> str:
         rows = _F.parse_scorers(html_text)
     except (ValueError, _http.TffError) as e:
         return _err(e)
-    return json.dumps(
-        {
+    return _ok({
             "league": league_info["name"],
             "count": min(limit, len(rows)),
             "scorers": rows[:limit],
-        },
-        ensure_ascii=False,
-    )
+        })
+
+
+@mcp.tool()
+def tff_health() -> str:
+    """Check whether tff.org is reachable right now.
+
+    Returns status ok (HTTP 200), blocked (HTTP 403/429 — bot wall or
+    rate limit) or error, plus the HTTP status and the probed URL.
+    One polite request; it does not fetch any listings."""
+    return _ok(_http.health_check())
 
 
 def main() -> None:
