@@ -15,7 +15,7 @@ mcp-name: io.github.mohammad-abbasi-sh/tff-mcp
   "mcpServers": {
     "tff": {
       "command": "uvx",
-      "args": ["tff-mcp==0.1.0"]
+      "args": ["tff-mcp==0.1.1"]
     }
   }
 }
@@ -54,9 +54,9 @@ tff.org صفحات لیگ را کاملاً سمت سرور رندر می‌کن
 ## نصب
 
 ```bash
-uvx tff-mcp==0.1.0        # اجرای مستقیم (نیازمند uv)
+uvx tff-mcp==0.1.1        # اجرای مستقیم (نیازمند uv)
 # یا
-pip install tff-mcp==0.1.0
+pip install tff-mcp==0.1.1
 tff-mcp    # سرور MCP را روی stdio راه می‌اندازد
 ```
 
