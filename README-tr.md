@@ -15,7 +15,7 @@ MCP istemci yapılandırmanıza ekleyin (stdio):
   "mcpServers": {
     "tff": {
       "command": "uvx",
-      "args": ["tff-mcp"]
+      "args": ["tff-mcp==0.1.0"]
     }
   }
 }
@@ -54,9 +54,9 @@ tff.org lig sayfalarını tamamen sunucu taraflı gösterir — giriş, API anah
 ## Kurulum
 
 ```bash
-uvx tff-mcp        # doğrudan çalıştır (uv gerekir)
+uvx tff-mcp==0.1.0        # doğrudan çalıştır (uv gerekir)
 # veya
-pip install tff-mcp
+pip install tff-mcp==0.1.0
 tff-mcp    # MCP sunucusunu stdio üzerinde başlatır
 ```
 
